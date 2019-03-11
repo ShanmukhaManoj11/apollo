@@ -151,10 +151,17 @@ cc_library(
         "cruise_mlp_evaluator.h",
     ],
     deps = [
+        "//modules/prediction/common:prediction_util",
         "//modules/prediction/container:container_manager",
         "//modules/prediction/evaluator",
         "//modules/prediction/network/cruise_model",
-    ],
+    ] + select({
+        "//tools/platforms:use_gpu": [
+            "@pytorch_gpu",
+        ],
+        "//conditions:default": [
+            "@pytorch",
+        ]}),
 )
 
 cc_test(
